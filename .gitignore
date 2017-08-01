@@ -1,5 +1,8 @@
-# Compiled Python files
-*.pyc
+# Add custom commands
+.extra
+
+# Extend $PATH
+.path
 
 # Folder view configuration files
 .DS_Store
