@@ -44,6 +44,7 @@ brew install screen
 brew install homebrew/php/php56 --with-gmp
 
 # Install other useful binaries.
+brew install diff-so-fancy
 brew install exa
 brew install git
 brew install lynx
