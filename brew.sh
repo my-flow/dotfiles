@@ -47,6 +47,7 @@ brew install homebrew/php/php56 --with-gmp
 brew install diff-so-fancy
 brew install exa
 brew install git
+brew install jrnl
 brew install lynx
 brew install tree
 
