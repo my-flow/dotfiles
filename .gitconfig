@@ -23,9 +23,10 @@
 	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
 	trustctime = false
 
-	# Prevent showing files whose names contain non-ASCII symbols as unversioned.
+	# Git and the Umlaut problem on Mac OS X
+	# Prevent showing files which filenames contains umlauts as untracked
 	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
-	precomposeunicode = false
+	precomposeunicode = true
 
 [color]
 
