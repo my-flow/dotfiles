@@ -30,6 +30,5 @@ alias egrep='egrep --color=auto'
 # Format disk usage statistics in a human-readable manner
 alias du="du -hc -d 1"
 
-# `exa` is a modern replacement for `ls`
+# Format `exa` listings
 alias exa="exa --color-scale --all --tree --level=1 --long --header --git"
-alias ls="exa"
