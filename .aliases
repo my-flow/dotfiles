@@ -32,3 +32,7 @@ alias du="du -hc -d 1"
 
 # Format `exa` listings
 alias exa="exa --color-scale --all --tree --level=1 --long --header --git"
+
+alias rm="rm -v"
+alias cp="cp -v"
+alias mv="mv -v"
