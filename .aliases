@@ -31,7 +31,7 @@ alias egrep='egrep --color=auto'
 alias du="du -hc -d 1"
 
 # Format `exa` listings
-alias exa="exa --color-scale --all --tree --level=1 --long --header --git"
+alias exa="exa --all --tree --level=1 --long --header --git --color-scale --color=always"
 
 alias rm="rm -v"
 alias cp="cp -v"
