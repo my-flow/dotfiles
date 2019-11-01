@@ -54,6 +54,7 @@ brew install jrnl
 brew install gs
 brew install lynx
 brew install tree
+brew install z
 
 # Remove outdated versions from the cellar.
 brew cleanup
