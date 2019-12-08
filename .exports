@@ -44,4 +44,4 @@ export LESS="--RAW-CONTROL-CHARS"
 export HOMEBREW_NO_ANALYTICS=1
 
 # Install Homebrew applications inside the home directory
-export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
