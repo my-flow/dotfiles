@@ -3,6 +3,9 @@
 	# View abbreviated SHA, description, and history graph
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
+	# Show the user email for the current repository.
+	whoami = config user.email
+
 [apply]
 
 	# Detect whitespace errors when applying a patch
