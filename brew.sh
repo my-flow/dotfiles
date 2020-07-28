@@ -51,8 +51,10 @@ brew install diff-so-fancy
 brew install exa
 brew install git
 brew install jrnl
+brew install grc
 brew install gs
 brew install lynx
+brew install starship
 brew install tree
 brew install z
 
