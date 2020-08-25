@@ -43,8 +43,10 @@ export CLICOLOR=1
 # Output ANSI "color" escape sequences in "raw" form
 export LESS="--RAW-CONTROL-CHARS"
 
-# Disable Google Analytics tracking for Homebrew
+# Additional security options for Homebrew
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_INSECURE_REDIRECT=1
+export HOMEBREW_CASK_OPTS=--require-sha
 
 # Install Homebrew applications inside the home directory
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
