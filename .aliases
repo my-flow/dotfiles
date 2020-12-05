@@ -33,6 +33,9 @@ alias du="du -hc -d 1"
 # Format `exa` listings
 alias exa="exa --all --tree --level=1 --long --header --git --color-scale --color=always --icons"
 
+# Ignore error messages of ripgrep-all
+alias rga="rga --no-messages"
+
 alias rm="rm -v"
 alias cp="cp -v"
 alias mv="mv -v"
