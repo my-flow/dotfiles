@@ -1,5 +1,6 @@
 # Add custom commands
 .extra
+.spacemacs.d/extra.el
 
 # Extend $PATH
 .path
