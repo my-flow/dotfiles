@@ -40,12 +40,12 @@ This function should only modify configuration layer settings."
    ;; ----------------------------------------------------------------
    auto-completion
    better-defaults
-   emacs-lisp
-   git
+   ;; emacs-lisp
+   ;; git
    ;; helm
    ;; lsp
    ;; markdown
-   multiple-cursors
+   ;; multiple-cursors
    org
    ;; (shell :variables
    ;;        shell-default-height 30
@@ -53,7 +53,7 @@ This function should only modify configuration layer settings."
    ;; spell-checking
    ;; syntax-checking
    ;; version-control
-   treemacs
+   ;; treemacs
    ;; unicode-fonts
    )
 
@@ -176,7 +176,7 @@ It should only modify the values of Spacemacs settings."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner nil
 
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
@@ -217,9 +217,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(dracula
-             spacemacs-dark
-             spacemacs-light)
+   dotspacemacs-themes '(dracula)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -283,7 +281,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
 
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
    ;; effect when using the "jump to layout by number" commands. (default nil)
@@ -298,7 +296,7 @@ It should only modify the values of Spacemacs settings."
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
-   dotspacemacs-auto-save-file-location 'cache
+   dotspacemacs-auto-save-file-location nil
 
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
@@ -328,11 +326,11 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -351,12 +349,12 @@ It should only modify the values of Spacemacs settings."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 95
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 95
 
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
@@ -536,8 +534,8 @@ before packages are loaded."
   (add-hook 'org-mode-hook '(lambda () (eyebrowse-mode -1)))
   (add-hook 'org-after-todo-state-change-hook 'org-checklist)
 
-  ; Automatic Hourly Commits: http://doc.norang.ca/org-mode.html#HourlyCommits
-  (run-at-time "00:59" 3600 'org-save-all-org-buffers)
+  ; automatically save org-mode buffers: https://emacs.stackexchange.com/a/38068
+  (add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
   (setq holiday-bahai-holidays nil)
   (setq holiday-hebrew-holidays nil)
@@ -590,6 +588,10 @@ before packages are loaded."
   (let ((personal-settings "~/.spacemacs.d/extra.el"))
     (when (file-exists-p personal-settings)
       (load-file personal-settings)))
+
+  (org-agenda-list)
+  (switch-to-buffer "*Org Agenda*")
+  (spacemacs/toggle-maximize-buffer)
 )
 
 (defun my/copy-idlink-to-clipboard()
@@ -619,13 +621,19 @@ if the `RESET_CHECK_BOXES' property is set"
   (when (member org-state org-done-keywords)
     (org-reset-checkbox-state-maybe)))
 
+(defun pulse-line (&rest _)
+  "Pulse the current line."
+  (pulse-momentary-highlight-one-line (point)))
+
+(dolist (command '(scroll-up-command scroll-down-command
+  recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Terminal notifier
 ;; requires 'brew install terminal-notifier'
 ;; stolen from erc-notifier
 (defvar terminal-notifier-command (executable-find "terminal-notifier") "The path to terminal-notifier.")
-
-; (terminal-notifier-notify "Emacs notification" "Something amusing happened")
 
 (defun terminal-notifier-notify (title message)
   "Show a message with
