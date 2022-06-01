@@ -583,6 +583,9 @@ before packages are loaded."
   (setq split-height-threshold nil)
   (setq split-width-threshold 0)
 
+  ;; https://stackoverflow.com/a/13755627
+  (load "~/.spacemacs.d/next-spec-day.el")
+
   ;; keep my personal settings not in the .emacs file
   ;; load it if it exists
   (let ((personal-settings "~/.spacemacs.d/extra.el"))
