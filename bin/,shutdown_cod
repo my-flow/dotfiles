@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+main() {
+  ssh Cod.local "base64 --decode | sudo --stdin shutdown -h +0" \
+    < "${SCRIPT_DIR}"/password
+}
+
+main

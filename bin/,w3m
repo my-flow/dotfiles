@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly SIXEL_DIR="${HOME}/workplace/libsixel"
+
+main() {
+  export W3M_IMG2SIXEL="${SIXEL_DIR}/converters/img2sixel"
+  "${HOME}/workplace/w3m/w3m" -sixel -o display_image=1 "$@"
+}
+
+main "$@"

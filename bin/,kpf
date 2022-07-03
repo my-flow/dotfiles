@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+##############################################################################
+#
+#  kpf
+#  fzf for keepassxc-cli
+#  (c) Steven Saus 2021
+#  Licensed under the MIT license
+#
+#  BEFORE RUNNING - two environment variables
+#  export KPPW="Your KeepassxC password"
+#  export KPDB=/path/to/keepassxc.kdbx
+#
+##############################################################################
+
+readonly TIMEOUT=${TIMEOUT:-0} # Timeout before clearing the clipboard (default is 10 seconds, set to 0 for unlimited).
+readonly FZF="fzf --no-hscroll --multi --ansi --exact"
+readonly HEADER_DB_SELECTION="Choose KeepassXC database:"
+readonly HEADER_PASSWORD="Please enter the password for the KeepassX database: "
+
+if [ -z "${KPDB+x}" ] || [ ! -f "${KPDB}" ]; then
+    KPDB=$(eval "${FZF} --height 50% --border --header \"${HEADER_DB_SELECTION}\"" < <(find "${PWD}" -name '*.kdbx' 2> /dev/null))
+fi
+
+if [ -z "${KPPW+x}" ]; then
+    IFS= read -r -s -p "${HEADER_PASSWORD}" KPPW
+    keepassxc-cli open "${KPDB}" < <(echo "${KPPW}")
+fi
+
+if [ $# -eq 0 ]; then
+    SCRIPT_NAME="KPPW=${KPPW} $(realpath "$0")"
+    KPVALUE=$(keepassxc-cli ls --recursive --flatten "${KPDB}" < <(echo "${KPPW}") | eval "${FZF} --preview=\"$SCRIPT_NAME {}\"" )
+    keepassxc-cli show "${KPDB}" "${KPVALUE}" 2> /dev/null < <(echo "${KPPW}") | bat --highlight-line=1 --language=http --plain
+    keepassxc-cli clip  --attribute password "${KPDB}" "${KPVALUE}" "${TIMEOUT}" 2> /dev/null < <(echo "${KPPW}")
+else
+    keepassxc-cli show --show-protected "${KPDB}" "${1}" 2> /dev/null < <(echo "${KPPW}") | bat --force-colorization --highlight-line=1 --language=http --plain
+fi

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+brew update
+brew upgrade
+
+softwareupdate --agree-to-license --install --all
+softwareupdate --history

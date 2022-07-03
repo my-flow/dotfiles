@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+function show_preview() {
+  jrnl -on "$(echo "${1}" | cut -c 1-16)" --format md | \
+    bat --plain --force-colorization --language=md --highlight-line 5
+}
+export -f show_preview
+
+TITLE="$(jrnl --short | \
+  fzf --ansi --exact --no-sort --preview='show_preview {}' --preview-window=wrap --tac)"
+
+jrnl -on "$(echo "${TITLE}" | \
+  cut -c 1-16)" --format md | \
+  bat --language=md

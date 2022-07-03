@@ -1,0 +1,2 @@
+#!/usr/bin/env gsed -z -f
+s/<NAME>\([^\n]*\)\n\([[:blank:]]*\)<MEMO>\([^\n]*\)/<MEMO>\1\n\2<NAME>\3/g
