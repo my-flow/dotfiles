@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:---ansi --exact --multi --no-hscroll}"
+readonly HEADER_DB_SELECTION="Choose KeepassXC database:"
+readonly HEADER_PASSWORD="Please enter the password for the KeepassX database: "
+
+export KPDB
+export KPPW
+
+if [ -z "${KPDB+x}" ] || [ ! -f "${KPDB}" ]; then
+    # shellcheck disable=SC2086
+    KPDB=$(fzf-tmux ${FZF_DEFAULT_OPTS} --height 50% --border --header "${HEADER_DB_SELECTION}" < <(find "${HOME}" -name '*.kdbx' 2>/dev/null))
+fi
+
+if [ -z "${KPPW+x}" ]; then
+    IFS= read -r -s -p "${HEADER_PASSWORD}" KPPW < /dev/tty
+    keepassxc-cli open "${KPDB}" < <(echo "${KPPW}") 1>/dev/null 2>&1
+    ret_code=$?
+    return $ret_code
+fi

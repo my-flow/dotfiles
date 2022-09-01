@@ -53,6 +53,7 @@ brew install git-delta
 brew install jrnl
 brew install grc
 brew install gs
+brew install keepassxc
 brew install lynx
 brew install starship
 brew install tree

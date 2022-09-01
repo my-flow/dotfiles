@@ -718,8 +718,6 @@ This function is called at the very end of Spacemacs initialization."
         ("W" . "Weekly Review Helper")
         ("Wn" "New tasks" tags "NEW"
           ((org-agenda-overriding-header "NEW Tasks")))
-        ("Wd" "Check DELEGATED tasks" todo "DELEGATED"
-          ((org-agenda-overriding-header "DELEGATED tasks")))
         ("Ww" "Check WAITING tasks" todo "WAITING"
           ((org-agenda-overriding-header "WAITING tasks")))
         ("Ws" "Check SOMEDAY tasks" todo "SOMEDAY"
