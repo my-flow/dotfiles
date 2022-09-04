@@ -39,3 +39,6 @@ alias rga="rga --no-messages"
 alias rm="rm -v"
 alias cp="cp -v"
 alias mv="mv -v"
+
+# https://gist.github.com/pudquick/29bc95b6c49703992981864e48f8e341
+alias brew=~/.local/homebrew/bin/brew
