@@ -52,13 +52,6 @@
 	local = yellow
 	remote = green
 
-[color "diff"]
-
-	meta = yellow bold
-	frag = magenta bold # line info
-	old = red # deletions
-	new = green # additions
-
 [color "status"]
 
 	added = yellow
@@ -116,62 +109,3 @@
 [init]
 
 	defaultBranch = main
-
-[pager]
-	diff = delta
-	log = delta
-	reflog = delta
-	show = delta
-
-[interactive]
-	diffFilter = delta --diff-so-fancy
-
-[delta]
-	features = diff-so-fancy
-	syntax-theme = Dracula
-	whitespace-error-style = 22 reverse
-
-[delta "decorations"]
-	commit-decoration-style = bold yellow box ul
-	file-style = bold yellow ul
-	file-decoration-style = none
-
-[delta "diff-so-fancy"]
-	commit-style                  = bold yellow
-	file-style                    = bold yellow
-	hunk-header-style             = bold purple
-	minus-style                   = red
-	minus-non-emph-style          = red
-	minus-emph-style              = bold red 52
-	minus-empty-line-marker-style = normal "#3f0001"
-	zero-style                    = normal
-	plus-style                    = green
-	plus-non-emph-style           = green
-	plus-emph-style               = bold green 22
-	plus-empty-line-marker-style  = normal "#002800"
-	whitespace-error-style        = reverse 22
-	true-color                    = auto
-	file-added-label              = 'added:'
-	file-modified-label           = ''
-	file-removed-label            = 'removed:'
-	file-renamed-label            = 'renamed:'
-	hyperlinks                    = false
-	inspect-raw-lines             = true
-	keep-plus-minus-markers       = false
-	line-numbers                  = true
-	line-numbers-minus-style      = 88
-	line-numbers-zero-style       = "#444444"
-	line-numbers-plus-style       = 28
-	line-numbers-left-style       = blue
-	line-numbers-right-style      = blue
-	line-numbers-left-format      = '{nm:^4}⋮'
-	line-numbers-right-format     = '{np:^4}│'
-	max-line-distance             = 0.6
-	max-line-length               = 512
-	navigate                      = false
-	navigate-regexp               =
-	paging                        = auto
-	side-by-side                  = false
-	syntax-theme                  = Dracula
-	width                         = 95
-	tabs                          = 4
