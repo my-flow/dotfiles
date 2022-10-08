@@ -57,7 +57,6 @@ FZF_DEFAULT_COMMAND="reload $(printf %q "${INITIAL_QUERY}")" \
 fzf --ansi \
     --bind 'change:reload:sleep 0.1; reload {q}' \
     --bind 'enter:execute(show {+1..2} > /dev/tty)' \
-    --disabled \
     --exact \
     --multi \
     --no-sort \

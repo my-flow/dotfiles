@@ -24,11 +24,11 @@ source "${SCRIPT_DIR}"/.kp.function
 if [ $# -eq 0 ]; then
     SCRIPT_NAME="KPPW=${KPPW} $(realpath "$0")"
     # shellcheck disable=SC2086
-    KPVALUE=$(keepassxc-cli ls --recursive --flatten "${KPDB}" < <(echo "${KPPW}") | fzf-tmux ${FZF_DEFAULT_OPTS} --preview="$SCRIPT_NAME {}" )
+    KPVALUE=$(keepassxc-cli ls --recursive --flatten "${KPDB}" 2> /dev/null < <(echo "${KPPW}") | fzf-tmux ${FZF_DEFAULT_OPTS} --preview="$SCRIPT_NAME {}" )
     keepassxc-cli show "${KPDB}" "${KPVALUE}" --show-attachments 2> /dev/null < <(echo "${KPPW}") | bat --highlight-line=1 --language=http --plain
     echo -n "TOTP: "
     keepassxc-cli show "${KPDB}" "${KPVALUE}" --totp 2> /dev/null < <(echo "${KPPW}")
     keepassxc-cli clip  --attribute password "${KPDB}" "${KPVALUE}" "${TIMEOUT}" 2> /dev/null < <(echo "${KPPW}")
 else
-    keepassxc-cli show "${KPDB}" "${1}" 2> /dev/null < <(echo "${KPPW}") | bat --force-colorization --highlight-line=1 --language=http --plain
+    keepassxc-cli show "${KPDB}" "${1}" 2> /dev/null < <(echo "${KPPW}") | bat --highlight-line=1 --language=http --plain
 fi
