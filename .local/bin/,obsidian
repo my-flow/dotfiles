@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+FILE_URL_ENCODED=$(jq -rn --arg x "$(realpath "${1}")" '$x | @uri')
+readonly FILE_URL_ENCODED
+
+open obsidian://open?path="${FILE_URL_ENCODED}"
