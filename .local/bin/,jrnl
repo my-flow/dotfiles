@@ -3,9 +3,6 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-DAYONE_PATH="$(jrnl --list | tail --lines=2 | head --lines=1 | cut -f5- -d' ')"
-readonly DAYONE_PATH="${DAYONE_PATH/#\~/$HOME}"
-export DAYONE_PATH
 INITIAL_QUERY="${*:-}"
 
 
@@ -26,17 +23,8 @@ export -f reload
 
 
 function prepare() {
-    dayone_id=$(jrnl -on "${1}" \
-        --config-override editor "tail --lines=1" \
-        --edit | \
-        cut -c "3-")
-
-    dayone_image="${DAYONE_PATH}/photos/${dayone_id}.jpg"
-
-    [ -f "${dayone_image}" ] && printf '![](%s){ width=500px }\n' "${dayone_image}"
-
     printf '\n'
-    jrnl -on "${1}" --format markdown
+    jrnl -on "${1}" -n 1 --format markdown
 }
 export -f prepare
 
@@ -57,6 +45,7 @@ FZF_DEFAULT_COMMAND="reload $(printf %q "${INITIAL_QUERY}")" \
 fzf --ansi \
     --bind 'change:reload:sleep 0.1; reload {q}' \
     --bind 'enter:execute(show {+1..2} > /dev/tty)' \
+    --disabled \
     --exact \
     --multi \
     --no-sort \

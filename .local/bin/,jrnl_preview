@@ -3,19 +3,11 @@
 set -Eeuo pipefail
 
 function show() {
-  tags=$(jrnl -on "${1}" -n 1 --tags)
-
-  if [[ ${tags::1} == "[" ]] ; then
-    printf "" # [No tags found in journal.]
-  else
-    printf "# $(echo "${tags}" | awk '{ print $1 }' ORS=' ')"
-  fi
-
   printf "\n$(jrnl -on "${1}" -n 1 --format text)"
 }
 
 for date in "$@"
-do  
+do
   show "${date}" | \
     bat \
       --highlight-line 2 \
