@@ -38,3 +38,10 @@ set convert-meta off
 
 # Use Alt/Meta + Delete to delete the preceding word
 "\e[3;3~": kill-word
+
+# Increase timeout for Emacs-style key bindings
+set keyseq-timeout 1200
+
+# Enable readline’s color highlighting for completion
+set colored-stats on
+set colored-completion-prefix on
