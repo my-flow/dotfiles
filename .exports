@@ -47,6 +47,4 @@ export LESS="--RAW-CONTROL-CHARS"
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export HOMEBREW_CASK_OPTS=--require-sha
-
-# Install Homebrew applications inside the home directory
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"

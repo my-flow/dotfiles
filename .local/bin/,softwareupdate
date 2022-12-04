@@ -2,8 +2,9 @@
 
 set -euo pipefail
 
-brew update
-brew upgrade
-
 softwareupdate --agree-to-license --install --all
 softwareupdate --history
+
+"${HOME}"/.local/homebrew/bin/brew update
+"${HOME}"/.local/homebrew/bin/brew upgrade
+
