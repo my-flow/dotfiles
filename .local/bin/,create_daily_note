@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BASE_PATH=$(yq '.journals.default' "${HOME}"/.config/jrnl/jrnl.yaml)
+readonly BASE_PATH
+
+jrnl new
+,obsidian "${BASE_PATH}/$(date '+%Y/%m/%d').txt"

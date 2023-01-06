@@ -83,11 +83,6 @@
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
 
-	# Get an error unless every merge is fast-forward. No merge commits, no 
-	# joining together of two histories, just a smooth progression from commit
-	# to commit.
-	ff = only
-
 [push]
 
 	# https://git-scm.com/docs/git-config#git-config-pushdefault
