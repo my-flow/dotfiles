@@ -45,3 +45,6 @@ alias brew="~/.local/homebrew/bin/brew"
 
 # View inline images in w3m with iTerm2
 alias w3m="w3m -sixel"
+
+# https://dev.yorhel.nl/ncdu/scr
+alias ncdu="ncdu --color=dark"
