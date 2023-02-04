@@ -343,6 +343,8 @@ tmux_conf_copy_to_os_clipboard=false
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 
+set-option default-terminal "screen-256color"
+
 # increase history size
 #set -g history-limit 10000
 
@@ -369,7 +371,6 @@ set -g mode-keys vi
 
 # Open default windows
 new-session -d -s ssh_tmux
-new-window -n emacs -S emacs
 new-window -n mutt  -S neomutt
 new-window -n bash  -S
 

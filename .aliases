@@ -41,4 +41,7 @@ alias cp="cp -v"
 alias mv="mv -v"
 
 # https://gist.github.com/pudquick/29bc95b6c49703992981864e48f8e341
-alias brew=~/.local/homebrew/bin/brew
+alias brew="~/.local/homebrew/bin/brew"
+
+# View inline images in w3m with iTerm2
+alias w3m="w3m -sixel"

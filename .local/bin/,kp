@@ -2,19 +2,6 @@
 
 set -Eeuo pipefail
 
-##############################################################################
-#
-#  kpf
-#  fzf for keepassxc-cli
-#  (c) Steven Saus 2021
-#  Licensed under the MIT license
-#
-#  BEFORE RUNNING - two environment variables
-#  export KPPW="Your KeepassxC password"
-#  export KPDB=/path/to/keepassxc.kdbx
-#
-##############################################################################
-
 readonly TIMEOUT=${TIMEOUT:-0} # Timeout before clearing the clipboard (default is 10 seconds, set to 0 for unlimited).
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:---ansi --exact --multi --no-hscroll}"
@@ -27,8 +14,10 @@ if [ $# -eq 0 ]; then
     KPVALUE=$(keepassxc-cli ls --recursive --flatten "${KPDB}" 2> /dev/null < <(echo "${KPPW}") | fzf-tmux ${FZF_DEFAULT_OPTS} --preview="$SCRIPT_NAME {}" )
     keepassxc-cli show "${KPDB}" "${KPVALUE}" --show-attachments 2> /dev/null < <(echo "${KPPW}") | bat --highlight-line=1 --language=http --plain
     echo -n "TOTP: "
-    keepassxc-cli show "${KPDB}" "${KPVALUE}" --totp 2> /dev/null < <(echo "${KPPW}")
+    keepassxc-cli show "${KPDB}" "${KPVALUE}" --totp 2> /dev/null < <(echo "${KPPW}") || echo
     keepassxc-cli clip  --attribute password "${KPDB}" "${KPVALUE}" "${TIMEOUT}" 2> /dev/null < <(echo "${KPPW}")
 else
     keepassxc-cli show "${KPDB}" "${1}" 2> /dev/null < <(echo "${KPPW}") | bat --highlight-line=1 --language=http --plain
+    echo -n "TOTP: "
+    keepassxc-cli show "${KPDB}" "${1}" --totp 2> /dev/null < <(echo "${KPPW}") || echo
 fi
