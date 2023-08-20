@@ -51,3 +51,6 @@ alias ncdu="ncdu --color=dark"
 
 # https://github.com/jesseduffield/lazygit
 alias lg="lazygit"
+
+# wget
+alias wget=wget --hsts-file="${XDG_DATA_HOME}/wget-hsts"
