@@ -5,6 +5,7 @@
 
 	# Show the user email for the current repository.
 	whoami = config user.email
+  df = diff --word-diff=color
 
 [apply]
 

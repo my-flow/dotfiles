@@ -48,3 +48,6 @@ alias w3m="w3m -sixel"
 
 # https://dev.yorhel.nl/ncdu/scr
 alias ncdu="ncdu --color=dark"
+
+# https://github.com/jesseduffield/lazygit
+alias lg="lazygit"

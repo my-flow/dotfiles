@@ -371,7 +371,6 @@ set -g mode-keys vi
 
 # Open default windows
 new-session -d -s ssh_tmux
-new-window -n mutt  -S neomutt
 new-window -n bash  -S
 
 # -- tpm -----------------------------------------------------------------------
