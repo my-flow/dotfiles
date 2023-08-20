@@ -1,7 +1,7 @@
-# Add `~/.local/bin` to the `$PATH`
-export PATH="$HOME/.local/bin:$PATH";
+export PATH=/usr/local/bin:"${HOME}"/.local/bin:"${PATH}"
 
-# Expand brew command without adding it to $PATH
+# Sandbox homebrew on macOS
+# See https://gist.github.com/pudquick/29bc95b6c49703992981864e48f8e341
 brew="${HOME}/.local/homebrew/bin/brew"
 
 # Load the shell dotfiles, and then some:
