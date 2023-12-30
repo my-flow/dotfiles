@@ -30,8 +30,8 @@ alias egrep='egrep --color=auto'
 # Format disk usage statistics in a human-readable manner
 alias du="du -hc -d 1 | sort --reverse --sort=human-numeric | less -FX"
 
-# Format `exa` listings
-alias exa="exa --all --tree --level=1 --long --header --git --color-scale --color=always --icons"
+# Format `eza` listings
+alias eza="eza --all --classify --color=always --git --git-repos --header --icons --long --time-style long-iso"
 
 # Ignore error messages of ripgrep-all
 alias rga="rga --no-messages"

@@ -47,7 +47,7 @@ brew install php
 brew install gmp
 
 # Install other useful binaries.
-brew install exa
+brew install eza
 brew install git
 brew install git-delta
 brew install jrnl
