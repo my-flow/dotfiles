@@ -1,4 +1,4 @@
-export PATH=/usr/local/bin:"${HOME}"/.local/bin:"${PATH}"
+export PATH="${HOME}"/.local/bin:"${PATH}"
 
 # Sandbox homebrew on macOS
 # See https://gist.github.com/pudquick/29bc95b6c49703992981864e48f8e341

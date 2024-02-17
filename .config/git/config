@@ -5,7 +5,7 @@
 
 	# Show the user email for the current repository.
 	whoami = config user.email
-  df = diff --word-diff=color
+	df = diff --word-diff=color
 
 [apply]
 
@@ -64,8 +64,6 @@
 	# Detect copies as well as renames.
 	renames = copies
 
-[diff]
-
 	# Detect moved blocks of code and style them differently
 	colorMoved = default
 
@@ -83,6 +81,8 @@
 
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
+	tool = vimdiff
+	conflictstyle = diff3
 
 [push]
 
@@ -100,8 +100,19 @@
 	fsckobjects = true
 
 [mergetool]
+
 	keepBackup = false
+	prompt = false
 
 [init]
 
 	defaultBranch = main
+
+[commit]
+
+	gpgsign = true
+
+[tag]
+
+	gpgSign = true
+
