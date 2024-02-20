@@ -31,7 +31,7 @@ alias egrep='egrep --color=auto'
 alias du="du -hc -d 1 | sort --reverse --sort=human-numeric | less -FX"
 
 # Format `eza` listings
-alias eza="eza --all --classify --color=always --git --git-repos --header --icons --long --time-style long-iso"
+alias eza="eza --all --classify --color=always --git --header --icons=always --long --time-style long-iso"
 
 # Ignore error messages of ripgrep-all
 alias rga="rga --no-messages"
