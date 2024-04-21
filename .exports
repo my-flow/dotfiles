@@ -27,6 +27,7 @@ export HISTFILESIZE="${HISTSIZE}";
 # Omit duplicates and commands that begin with a space from history.
 export HISTCONTROL='ignoreboth';
 export HISTTIMEFORMAT="%F %T "
+export HISTORY_IGNORE="cd *:ls *:pwd:exit"
 
 # Prefer US English and use UTF-8.
 export LANG='en_US.UTF-8';
