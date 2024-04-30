@@ -74,3 +74,6 @@ export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}"/aws/config
 # w3m
 export W3M_DIR="${XDG_DATA_HOME}"/w3m
 
+# Starship
+export STARSHIP_LOG="error"
+
