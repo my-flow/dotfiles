@@ -52,3 +52,11 @@ if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ $- =~ i ]]; then
 	tmux new-session -A -s ssh_tmux
 	exit
 fi
+
+# Run fastfetch only once after boot or first shell start
+if [ ! -f /tmp/.fastfetch_shown ]; then
+    if command -v fastfetch > /dev/null 2>&1; then
+        fastfetch
+        touch /tmp/.fastfetch_shown
+    fi
+fi
