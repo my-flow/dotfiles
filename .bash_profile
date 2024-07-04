@@ -47,16 +47,11 @@ complete -W "NSGlobalDomain" defaults;
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
-# https://stackoverflow.com/a/43819740
-if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ $- =~ i ]]; then
-	tmux new-session -A -s ssh_tmux
-	exit
-fi
-
 # Run fastfetch only once after boot or first shell start
 if [ ! -f /tmp/.fastfetch_shown ]; then
-    if type -P fastfetch > /dev/null 2>&1; then
-        fastfetch
-        touch /tmp/.fastfetch_shown
-    fi
+	if type -P fastfetch > /dev/null 2>&1; then
+		fastfetch
+		touch /tmp/.fastfetch_shown
+	fi
 fi
+
