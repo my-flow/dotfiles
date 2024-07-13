@@ -29,6 +29,7 @@ function tmosh
 end
 
 starship init fish | source
+atuin init fish | source
 
 # Run fastfetch only once after boot or first shell start
 if not test -f /tmp/.fastfetch_shown
