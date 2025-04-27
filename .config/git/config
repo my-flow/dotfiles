@@ -19,8 +19,8 @@
 
 [core]
 
-	# Use custom `.gitignore` and `.gitattributes`.
-	excludesfile = ~/.gitignore
+	# Use custom `.config/git/ignore` and `.gitattributes`.
+	excludesfile = ~/.config/git/ignore
 	attributesfile = ~/.gitattributes
 
 	# Treat spaces before tabs and all kinds of trailing whitespace as an error.
