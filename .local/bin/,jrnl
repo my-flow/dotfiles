@@ -7,43 +7,49 @@ INITIAL_QUERY="${*:-}"
 
 
 function reload() {
-    if [ -z "${1}" ]; then
+    if [ -z "${1:-}" ]; then
         jrnl --short
         return
     fi
-    matches1=$(jrnl --short $(echo "$@" | awk -v OFS=' -and -contains ' '{if(NR=1) $1="-contains "$1; print}'))
-    matches2=$(jrnl --short $(echo "$@" | awk -v OFS=' -and ' '{gsub(/^| /,"&@")} $1=$1'))
+
+    matches1=$(jrnl --short $(echo "$@" | awk -v OFS=' -and -contains ' '{if(NR==1) $1="-contains "$1; print}'))
+    matches2=$(jrnl --short $(echo "$@" | awk -v OFS=' -and ' '{gsub(/^| /, "&@"); print}'))
+
     if [ -z "${matches2}" ]; then
         echo "${matches1}"
     else
-        sort --unique <(echo "${matches1}") <(echo "${matches2}") | grep .
+        sort --unique <(echo "${matches1}") <(echo "${matches2}") | grep . || true
     fi
 }
-export -f reload
 
 
 function prepare() {
     printf '\n'
     jrnl -on "${1}" -n 1 --format markdown
 }
-export -f prepare
 
 
 function show() {
     if [ -z "${1+x}" ]; then
         return
     fi
-
     prepare "${1}" | \
         pandoc --from=markdown | \
         ,w3m -T text/html
 }
+
+# Export functions and create a temporary init file for subshells
+export -f reload
+export -f prepare
 export -f show
 
+BASH_INIT=$(mktemp)
+trap "rm -f ${BASH_INIT}" EXIT
+declare -f reload > "${BASH_INIT}"
 
-FZF_DEFAULT_COMMAND="reload $(printf %q "${INITIAL_QUERY}")" \
+FZF_DEFAULT_COMMAND="bash -c 'source ${BASH_INIT}; reload $(printf %q "${INITIAL_QUERY}")'" \
 fzf --ansi \
-    --bind 'change:reload:sleep 0.1; reload {q}' \
+    --bind "change:reload:sleep 0.1; bash -c 'source ${BASH_INIT}; reload {q}'" \
     --bind 'enter:execute(show {+1..2} > /dev/tty)' \
     --disabled \
     --exact \
