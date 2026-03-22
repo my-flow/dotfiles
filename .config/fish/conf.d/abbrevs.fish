@@ -12,12 +12,13 @@ if type -q eza
     abbr --add ls 'eza --all --classify --color=always --header --icons=auto --long --time-style long-iso | less -RFX'
 end
 
+abbr --add lsblk 'lsblk --fs'
+
 # Always enable colored `grep` output
 # Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
 abbr --add grep 'grep --color=auto'
 abbr --add egrep 'egrep --color=auto'
 abbr --add fgrep 'fgrep --color=auto'
-
 
 # https://dev.yorhel.nl/ncdu/scr
 abbr --add ncdu 'ncdu --color=dark --disable-delete --extended --show-itemcount --show-percent'
