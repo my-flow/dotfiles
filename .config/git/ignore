@@ -11,4 +11,5 @@ Thumbs.db
 .Trashes
 
 # Claude Code
+.claude/
 CLAUDE.local.md
