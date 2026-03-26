@@ -25,10 +25,13 @@ set --export fzf_git_log_opts "--preview-window=down"
 set --export GPG_TTY (tty);
 
 # Homebrew
-set --export HOMEBREW_NO_ANALYTICS "1"
-set --export HOMEBREW_NO_INSECURE_REDIRECT "1"
-set --export HOMEBREW_CASK_OPTS "--require-sha"
-set --export HOMEBREW_CASK_OPTS "--appdir=/Applications"
+switch (uname)
+    case Darwin
+        set --export HOMEBREW_NO_ANALYTICS "1"
+        set --export HOMEBREW_NO_INSECURE_REDIRECT "1"
+        set --export HOMEBREW_CASK_OPTS "--require-sha"
+        set --export HOMEBREW_CASK_OPTS "--appdir=/Applications"
+end
 
 # Don’t clear the screen after quitting a manual page.
 set --export MANPAGER "less -X"
