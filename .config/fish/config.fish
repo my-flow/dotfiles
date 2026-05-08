@@ -6,6 +6,7 @@ set fish_greeting
 
 starship init fish | source
 atuin init fish | source
+zoxide init fish | source
 
 # Run fastfetch only once after boot or first shell start
 if status is-interactive
