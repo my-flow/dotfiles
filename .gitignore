@@ -1,8 +1,2 @@
-# Add custom commands
-.extra
-.spacemacs.d/extra.el
+# User-specific overrides (not tracked)
 extra.fish
-
-# Extend $PATH
-.path
-
