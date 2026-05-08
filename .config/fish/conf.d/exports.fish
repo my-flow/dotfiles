@@ -33,8 +33,9 @@ switch (uname)
         set --export HOMEBREW_CASK_OPTS "--appdir=/Applications"
 end
 
-# Don’t clear the screen after quitting a manual page.
-set --export MANPAGER "less -X"
+# Syntax-highlighted man pages via bat.
+set --export MANPAGER "bat --style=plain"
+set --export BAT_THEME "ansi"
 
 # readline
 set --export --path INPUTRC "$XDG_CONFIG_HOME"/readline/inputrc

@@ -17,6 +17,22 @@
 	# Show most recently changed branches first.
 	sort = -committerdate
 
+[pager]
+
+	diff = delta
+	log = delta
+	reflog = delta
+	show = delta
+
+[interactive]
+
+	diffFilter = delta --color-only
+
+[delta]
+
+	navigate = true
+	line-numbers = true
+
 [core]
 
 	# Use custom `.config/git/ignore` and `.gitattributes`.

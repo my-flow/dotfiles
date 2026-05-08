@@ -23,6 +23,11 @@ abbr --add fgrep 'fgrep --color=auto'
 # https://dev.yorhel.nl/ncdu/scr
 abbr --add ncdu 'ncdu --color=dark --disable-delete --extended --show-itemcount --show-percent'
 
+# Prefer bat instead of cat if available
+if type -q bat
+    abbr --add cat 'bat'
+end
+
 # Ignore error messages of ripgrep-all
 abbr --add rga 'rga --no-messages'
 
