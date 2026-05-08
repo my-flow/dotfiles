@@ -59,13 +59,24 @@
 	changed = green
 	untracked = cyan
 
+[column]
+
+	# Display branch lists and other output in columns when terminal is wide enough.
+	ui = auto
+
 [diff]
+
+	# Use histogram algorithm for cleaner diffs on refactored code.
+	algorithm = histogram
 
 	# Detect copies as well as renames.
 	renames = copies
 
 	# Detect moved blocks of code and style them differently
 	colorMoved = default
+
+	# Use descriptive prefixes (i/w/c/o) instead of generic a/b in diffs.
+	mnemonicPrefix = true
 
 [diff "bin"]
 
@@ -84,12 +95,19 @@
 	tool = vimdiff
 	conflictstyle = diff3
 
+[pull]
+
+	# Rebase on pull instead of creating merge commits.
+	rebase = true
+
 [push]
 
 	# https://git-scm.com/docs/git-config#git-config-pushdefault
 	default = simple
 	# Make `git push` push relevant annotated tags when pushing branches out.
 	followTags = true
+	# Automatically set upstream when pushing a new branch for the first time.
+	autoSetupRemote = true
 
 [status]
 	# Show all of the files underneath a new directory during a git status
@@ -111,8 +129,18 @@
 [commit]
 
 	gpgsign = true
+	# Show the diff in the commit message editor for context.
+	verbose = true
 
 [tag]
 
 	gpgSign = true
+	# Sort tags by semantic version (newest first).
+	sort = -version:refname
+
+[rerere]
+
+	# Remember conflict resolutions and auto-apply them next time.
+	enabled = true
+	autoupdate = true
 
