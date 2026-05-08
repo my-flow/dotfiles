@@ -43,8 +43,8 @@ set --export --path INPUTRC "$XDG_CONFIG_HOME"/readline/inputrc
 # Starship
 set --export STARSHIP_LOG "error"
 
-# Make vim the default editor.
-set --export EDITOR "hx"
+# Make Neovim the default editor.
+set --export EDITOR "nvim"
 
 # Mosh
 set --export MOSH_SERVER_NETWORK "prefer-inet6"

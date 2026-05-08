@@ -34,5 +34,8 @@ abbr --add rga 'rga --no-messages'
 # View inline images in w3m with iTerm2
 abbr --add w3m 'w3m -sixel'
 
+# lazygit
+abbr --add lg 'lazygit'
+
 # wget
 abbr --add wget 'wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
