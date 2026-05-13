@@ -1,2 +1,5 @@
 README.md
 LICENSE-MIT.txt
+
+# Managed by the system
+.config/nvim/**

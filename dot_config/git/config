@@ -1,162 +1,36 @@
+# See https://git-scm.com/docs/git-config
+
 [alias]
-
-	# View abbreviated SHA, description, and history graph of the latest 20 commits.
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-
-	# Show the user email for the current repository.
-	whoami = config user.email
 	df = diff --word-diff=color
-
-[apply]
-
-	# Detect whitespace errors when applying a patch.
-	whitespace = fix
-
-[branch]
-
-	# Show most recently changed branches first.
-	sort = -committerdate
-
-[pager]
-
-	diff = delta
-	log = delta
-	reflog = delta
-	show = delta
-
-[interactive]
-
-	diffFilter = delta --color-only
-
-[delta]
-
-	navigate = true
-	line-numbers = true
-
-[core]
-
-	# Use custom `.config/git/ignore` and `.gitattributes`.
-	excludesfile = ~/.config/git/ignore
-	attributesfile = ~/.gitattributes
-
-	# Treat spaces before tabs and all kinds of trailing whitespace as an error.
-	# [default] trailing-space: looks for spaces at the end of a line
-	# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
-	whitespace=fix,-indent-with-non-tab,space-before-tab,trailing-space,cr-at-eol
-
-	# Make `git rebase` safer on macOS.
-	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-	trustctime = false
-
-	# Git and the Umlaut problem on Mac OS X
-	# Prevent showing files which filenames contains umlauts as untracked
-	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
-	precomposeunicode = true
-
-	# Speed up commands involving untracked files such as `git status`.
-	# https://git-scm.com/docs/git-update-index#_untracked_cache
-	untrackedCache = true
-
-[color]
-
-	# Use colors in Git commands that are capable of colored output when
-	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
-	ui = auto
-
-[color "branch"]
-
-	current = yellow reverse
-	local = yellow
-	remote = green
-
-[color "status"]
-
-	added = yellow
-	changed = green
-	untracked = cyan
-
-[column]
-
-	# Display branch lists and other output in columns when terminal is wide enough.
-	ui = auto
-
-[diff]
-
-	# Use histogram algorithm for cleaner diffs on refactored code.
-	algorithm = histogram
-
-	# Detect copies as well as renames.
-	renames = copies
-
-	# Detect moved blocks of code and style them differently
-	colorMoved = default
-
-	# Use descriptive prefixes (i/w/c/o) instead of generic a/b in diffs.
-	mnemonicPrefix = true
-
-[diff "bin"]
-
-	# Use `hexdump` to diff binary files.
-	textconv = hexdump -v -C
-
-[help]
-
-	# Automatically correct and execute mistyped commands.
-	autocorrect = 1
-
-[merge]
-
-	# Include summaries of merged commits in newly created merge commit messages
-	log = true
-	tool = vimdiff
-	conflictstyle = diff3
-
-[pull]
-
-	# Rebase on pull instead of creating merge commits.
-	rebase = true
-
-[push]
-
-	# https://git-scm.com/docs/git-config#git-config-pushdefault
-	default = simple
-	# Make `git push` push relevant annotated tags when pushing branches out.
-	followTags = true
-	# Automatically set upstream when pushing a new branch for the first time.
-	autoSetupRemote = true
-
-[status]
-	# Show all of the files underneath a new directory during a git status
-	showUntrackedFiles = all 
-
-[transfer]
-	# Do some extra checks when receiving or sending changes
-	fsckobjects = true
-
-[mergetool]
-
-	keepBackup = false
-	prompt = false
-
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
 [init]
-
 	defaultBranch = main
-
+[pull]
+	rebase = true            # Rebase (instead of merge) on pull
+[push]
+	autoSetupRemote = true   # Automatically set upstream branch on push
+[diff]
+	algorithm = histogram    # Clearer diffs on moved/edited lines
+	colorMoved = plain       # Highlight moved blocks in diffs
+	mnemonicPrefix = true    # More intuitive refs in diff output
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
 [commit]
-
+	verbose = true           # Include diff comment in commit message template
 	gpgsign = true
-	# Show the diff in the commit message editor for context.
-	verbose = true
-
+[column]
+	ui = auto                # Output in columns when possible
+[branch]
+	sort = -committerdate    # Sort branches by most recent commit first
 [tag]
-
+	sort = -version:refname  # Sort version numbers as you would expect
 	gpgSign = true
-	# Sort tags by semantic version (newest first).
-	sort = -version:refname
-
 [rerere]
-
-	# Remember conflict resolutions and auto-apply them next time.
-	enabled = true
-	autoupdate = true
-
+	enabled = true           # Record and reuse conflict resolutions
+	autoupdate = true        # Apply stored conflict resolutions automatically
