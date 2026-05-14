@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# Auto-rotate internal display based on IIO accelerometer orientation.
+# Requires: iio-sensor-proxy (monitor-sensor), hyprctl, python3, wvkbd-mobintl
+
+MONITOR="eDP-1"
+RES="1920x1080@60"
+POS="0x0"
+SCALE="1.5"
+TABLET_SW_DEV="/dev/input/event4"
+TABLET_STATE_FILE="/tmp/screen-rotation-tablet-mode"
+
+osk() {
+    if [[ "$1" == "true" ]]; then
+        pkill -USR2 wvkbd-mobintl 2>/dev/null || true  # show
+    else
+        pkill -USR1 wvkbd-mobintl 2>/dev/null || true  # hide
+    fi
+}
+
+start_wvkbd() {
+    pkill -x wvkbd-mobintl 2>/dev/null || true
+    sleep 0.3
+    wvkbd-mobintl --hidden -L 300 &
+    sleep 0.3
+    # Restore OSK if currently in tablet mode
+    if [[ "$(cat "$TABLET_STATE_FILE" 2>/dev/null)" == "1" ]]; then
+        osk true
+    fi
+}
+
+rotate() {
+    local transform
+    case "$1" in
+        normal)     transform=0 ;;
+        left-up)    transform=1 ;;
+        bottom-up)  transform=2 ;;
+        right-up)   transform=3 ;;
+        *)          return ;;
+    esac
+    echo "Rotating to transform $transform ($1)"
+    hyprctl keyword monitor "$MONITOR,$RES,$POS,$SCALE,transform,$transform"
+    hyprctl keyword "device[wacom-hid-5308-pen]:transform" "$transform"
+    hyprctl keyword "device[wacom-hid-5308-finger]:transform" "$transform"
+    start_wvkbd
+}
+
+# Monitor SW_TABLET_MODE switch and show/hide OSK accordingly.
+# Outputs initial state on startup, then streams changes.
+if [[ -r "$TABLET_SW_DEV" ]]; then
+    python3 - "$TABLET_SW_DEV" <<'EOF' | while read -r mode; do
+import struct, fcntl, array, sys
+
+EVENT_FORMAT = 'llHHi'
+EVENT_SIZE = struct.calcsize(EVENT_FORMAT)
+EV_SW, SW_TABLET_MODE = 5, 1
+EVIOCGSW = (2 << 30) | (0x45 << 8) | 0x1b | (1 << 16)
+
+dev = sys.argv[1]
+with open(dev, 'rb') as f:
+    buf = array.array('B', [0])
+    try:
+        fcntl.ioctl(f, EVIOCGSW, buf)
+        print('tablet' if (buf[0] >> SW_TABLET_MODE) & 1 else 'laptop', flush=True)
+    except OSError:
+        pass
+    while True:
+        data = f.read(EVENT_SIZE)
+        if len(data) < EVENT_SIZE:
+            break
+        _, _, type_, code, value = struct.unpack(EVENT_FORMAT, data)
+        if type_ == EV_SW and code == SW_TABLET_MODE:
+            print('tablet' if value else 'laptop', flush=True)
+EOF
+        echo "tablet mode: $mode"
+        if [[ "$mode" == "tablet" ]]; then
+            echo "1" > "$TABLET_STATE_FILE"
+            osk true
+        else
+            echo "0" > "$TABLET_STATE_FILE"
+            osk false
+        fi
+    done &
+fi
+
+start_wvkbd
+
+monitor-sensor 2>&1 | while IFS= read -r line; do
+    echo "sensor: $line"
+    if [[ "$line" == *"orientation changed: "* ]]; then
+        orientation="${line##*orientation changed: }"
+        orientation="${orientation//[[:space:]]/}"
+        rotate "$orientation"
+    fi
+done
