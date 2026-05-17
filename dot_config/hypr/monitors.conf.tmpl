@@ -1,0 +1,15 @@
+# See https://wiki.hypr.land/Configuring/Basics/Monitors/
+# List current monitors and resolutions possible: hyprctl monitors
+# Format: monitor = [port], resolution, position, scale
+
+{{ if eq .chezmoi.hostname "omarchy" -}}
+# Laptop: 1200p@60Hz, scale 1.667 (5/3) → 1152x720 logical
+# Offset 360px down so bottom edges align with external (1080 - 720 = 360)
+monitor = eDP-1, 1920x1200@60, 0x360, 1.666667
+
+# External: ASUS 32" 4K@120Hz, scale 2.0 → 1920x1080 logical, right of laptop
+monitor = desc:ASUSTek COMPUTER INC PG32UCDM, 3840x2160@120, 1152x0, 2.0
+
+{{ end -}}
+# Fallback for any other monitor
+monitor = , preferred, auto, auto
