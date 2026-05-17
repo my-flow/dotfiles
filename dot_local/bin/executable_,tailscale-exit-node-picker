@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Get available exit nodes as "hostname\tIP" pairs, sorted by hostname
+mapfile -t node_entries < <(tailscale status --json 2>/dev/null | \
+    jq -r '.Peer[] | select(.ExitNodeOption == true) | [.HostName, .TailscaleIPs[0]] | @tsv' 2>/dev/null | sort)
+
+if [ ${#node_entries[@]} -eq 0 ]; then
+    notify-send "Tailscale" "No exit nodes available"
+    exit 0
+fi
+
+# Split into parallel display/IP arrays
+display_names=()
+ips=()
+for entry in "${node_entries[@]}"; do
+    display_names+=("$(cut -f1 <<< "$entry")")
+    ips+=("$(cut -f2 <<< "$entry")")
+done
+
+# Check if an exit node is currently active
+is_active=$(tailscale status --json 2>/dev/null | \
+    jq -r 'if .ExitNodeStatus != null then "yes" else "" end' 2>/dev/null)
+
+# Build menu (disable option first if active, then sorted nodes)
+menu_items=()
+[ -n "$is_active" ] && menu_items+=("Disable exit node")
+menu_items+=("${display_names[@]}")
+
+# Show walker picker
+selected=$(printf '%s\n' "${menu_items[@]}" | \
+    omarchy-launch-walker --dmenu --width 600 --minheight 1 --maxheight 400 -p "Tailscale exit node…" 2>/dev/null)
+
+[ -z "$selected" ] && exit 0
+
+if [ "$selected" = "Disable exit node" ]; then
+    if tailscale set --exit-node= 2>/dev/null; then
+        notify-send "Tailscale" "Exit node disabled"
+    else
+        notify-send "Tailscale" "Failed to disable exit node" -u critical
+    fi
+else
+    # Look up the IP for the selected hostname
+    selected_ip=""
+    for i in "${!display_names[@]}"; do
+        if [ "${display_names[$i]}" = "$selected" ]; then
+            selected_ip="${ips[$i]}"
+            break
+        fi
+    done
+
+    if tailscale set --exit-node="$selected_ip" --accept-routes 2>/dev/null; then
+        notify-send "Tailscale" "Exit node: $selected"
+    else
+        notify-send "Tailscale" "Failed to set exit node: $selected" -u critical
+    fi
+fi
