@@ -15,3 +15,11 @@ eval "$(atuin init bash)"
 #
 # Make an alias for invoking commands you use constantly
 # alias p='python'
+
+zmosh() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: zmosh <user@host>"
+        return 1
+    fi
+    mosh "$@" -- zellij attach --create --index 0
+}
