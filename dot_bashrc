@@ -8,6 +8,9 @@ source ~/.local/share/omarchy/default/bash/rc
 # fzf git key bindings
 source ~/.local/share/fzf-git.sh/fzf-git.sh
 
+# atuin shell history
+eval "$(atuin init bash)"
+
 # Add your own exports, aliases, and functions here.
 #
 # Make an alias for invoking commands you use constantly
