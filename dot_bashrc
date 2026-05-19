@@ -9,6 +9,7 @@ source ~/.local/share/omarchy/default/bash/rc
 source ~/.local/share/fzf-git.sh/fzf-git.sh
 
 # atuin shell history
+[[ -f /usr/share/bash-preexec/bash-preexec.sh ]] && source /usr/share/bash-preexec/bash-preexec.sh
 eval "$(atuin init bash)"
 
 # Add your own exports, aliases, and functions here.
