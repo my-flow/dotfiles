@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=New DuckDuckGo Email
+Comment=Generate a new private DuckDuckGo email address
+Exec=,ddg-new-email
+Icon=internet-mail
+Type=Application
+Categories=Utility;Network;
+Keywords=duckduckgo;ddg;email;privacy;duck;
+NoDisplay=false

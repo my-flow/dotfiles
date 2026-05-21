@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+readonly TOKEN_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/ddg-email/token"
+readonly DDG_API="https://quack.duckduckgo.com/api/email/addresses"
+
+check_prerequisites() {
+	local missing=()
+	for cmd in curl jq notify-send wl-copy; do
+		command -v "$cmd" &>/dev/null || missing+=("$cmd")
+	done
+	if [[ ${#missing[@]} -gt 0 ]]; then
+		echo "Missing required commands: ${missing[*]}" >&2
+		exit 1
+	fi
+}
+
+main() {
+	check_prerequisites
+
+	if [[ ! -f "$TOKEN_FILE" ]]; then
+		notify-send -u critical "DDG Email" "Token not configured. Save your access token to:\n$TOKEN_FILE"
+		exit 1
+	fi
+
+	local token
+	token=$(tr -d '[:space:]' <"$TOKEN_FILE")
+
+	local response
+	response=$(curl -s -X POST "$DDG_API" \
+		-H "Authorization: Bearer $token" \
+		-H "Content-Type: application/json")
+
+	local address
+	address=$(jq -r '.address // empty' <<<"$response")
+
+	if [[ -z "$address" ]]; then
+		notify-send -u critical "DDG Email" "Failed to generate address. Check your token."
+		exit 1
+	fi
+
+	local email="${address}@duck.com"
+	printf '%s' "$email" | wl-copy
+	notify-send "DDG Email" "Copied: $email"
+}
+
+main "$@"
