@@ -1,6 +1,9 @@
 # If not running interactively, don't do anything (leave this at the top of this file)
 [[ $- != *i* ]] && return
 
+# Load ble.sh early so it can wrap readline before other hooks attach
+[[ $- == *i* ]] && [[ -f /usr/share/blesh/ble.sh ]] && source /usr/share/blesh/ble.sh --noattach
+
 # All the default Omarchy aliases and functions
 # (don't mess with these directly, just overwrite them here!)
 source ~/.local/share/omarchy/default/bash/rc
@@ -18,9 +21,34 @@ eval "$(atuin init bash)"
 # alias p='python'
 
 zmosh() {
-    if [[ -z "$1" ]]; then
-        echo "Usage: zmosh <user@host>"
-        return 1
-    fi
-    mosh "$@" -- zellij attach --create --index 0
+	if [[ -z "$1" ]]; then
+		echo "Usage: zmosh <user@host>"
+		return 1
+	fi
+	mosh "$@" -- zellij attach --create --index 0
 }
+
+if [[ ${BLE_VERSION-} ]]; then
+	bleopt complete_auto_complete=1
+	bleopt complete_menu_style=desc
+	bleopt complete_menu_filter=1
+
+	# fzf-git.sh macros rely on readline replaying keystrokes (shell-expand-line),
+	# which ble.sh doesn't support. Rebind all C-g combos with direct -x commands.
+	_fzf_git_ble_run() {
+		local result
+		result=$("$@")
+		[[ -n "$result" ]] || return 1
+		local joined=${result//$'\n'/ }
+		READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${joined} ${READLINE_LINE:$READLINE_POINT}"
+		((READLINE_POINT += ${#joined} + 1))
+	}
+	for _fzf_git_o in files branches tags remotes hashes stashes lreflogs each_ref worktrees; do
+		_fzf_git_c=${_fzf_git_o:0:1}
+		ble-bind -x "C-g C-$_fzf_git_c" "_fzf_git_ble_run _fzf_git_$_fzf_git_o"
+		ble-bind -x "C-g $_fzf_git_c" "_fzf_git_ble_run _fzf_git_$_fzf_git_o"
+	done
+	unset _fzf_git_o _fzf_git_c
+
+	ble-attach
+fi
