@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+GAME_DIR=/opt/s25rttr
+readonly GAME_DIR
+
+GAME_W=1280
+GAME_H=720
+DISPLAY_W=3840
+DISPLAY_H=2160
+readonly GAME_W GAME_H DISPLAY_W DISPLAY_H
+
+check_prerequisites() {
+	local missing=0
+	if ! command -v gamescope &>/dev/null; then
+		echo "error: required command not found: gamescope" >&2
+		missing=1
+	fi
+	if [[ ! -x "${GAME_DIR}/bin/rttr.sh" ]]; then
+		echo "error: required script not found or not executable: ${GAME_DIR}/bin/rttr.sh" >&2
+		missing=1
+	fi
+	return "$missing"
+}
+
+main() {
+	check_prerequisites
+
+	gamescope \
+		--adaptive-sync \
+		--fullscreen \
+		--nested-height "${GAME_H}" \
+		--nested-width "${GAME_W}" \
+		--output-height "${DISPLAY_H}" \
+		--output-width "${DISPLAY_W}" \
+		-- env SDL_VIDEODRIVER=x11 "${GAME_DIR}/bin/rttr.sh" \
+		2> >(grep -v "xwm: got the same buffer committed twice" >&2)
+}
+
+main
