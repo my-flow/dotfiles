@@ -1,0 +1,17 @@
+export NNN_FIFO=/tmp/nnn.fifo
+export PATH="${PATH}":"${HOME}"/.local/bin
+export XDG_CACHE_HOME="/home/dietpi/.cache"
+
+. "$HOME/.cargo/env"
+
+# Add TexLive to PATH (mirrors fish/conf.d/paths.fish logic)
+if [[ "$(uname)" == "Linux" ]]; then
+    _arch="$(uname -m)"
+    for _texlive_bin in /usr/local/texlive/*/bin/"${_arch}-linux"; do
+        _latest_texlive="$_texlive_bin"
+    done
+    if [[ -n "${_latest_texlive:-}" && -d "$_latest_texlive" ]]; then
+        export PATH="$_latest_texlive:$PATH"
+    fi
+    unset _arch _texlive_bin _latest_texlive
+fi
