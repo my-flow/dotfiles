@@ -5,5 +5,5 @@ function zmosh
         return 1
     end
 
-    mosh $argv -- zellij attach --create --index 0
+    mosh $argv -- bash -l -c "exec zellij attach --create --index 0"
 end

@@ -25,7 +25,7 @@ zmosh() {
 		echo "Usage: zmosh <user@host>"
 		return 1
 	fi
-	mosh "$@" -- zellij attach --create --index 0
+	mosh "$@" -- bash -l -c "exec zellij attach --create --index 0"
 }
 
 if [[ ${BLE_VERSION-} ]]; then
