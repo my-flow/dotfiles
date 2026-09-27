@@ -1,0 +1,11 @@
+#!/bin/bash
+# Open a web app URL in the default browser (xdg-settings).
+# Omarchy's omarchy-launch-webapp only supports Chromium-style --app mode and
+# falls back to Chromium for Firefox, so the web-app launchers use this instead.
+# If Firefox is already running, the URL opens as a new tab in it; otherwise a
+# new browser window is started.
+if pgrep -x -u "$USER" firefox >/dev/null; then
+  exec omarchy-launch-browser --new-tab "$@"
+else
+  exec omarchy-launch-browser --new-window "$@"
+fi
