@@ -53,3 +53,56 @@ for _, switch in ipairs(tablet_mode_switches()) do
   o.bind("switch:on:" .. switch, nil, "~/.local/bin/screen-rotation tablet-mode on", { locked = true })
   o.bind("switch:off:" .. switch, nil, "~/.local/bin/screen-rotation tablet-mode off", { locked = true })
 end
+
+-- Keep fullscreen windows clear of the on-screen keyboard. Fullscreen ignores
+-- the keyboard's reserved zone, so while it is shown, lay fullscreen windows
+-- out maximized (the app still believes it is fullscreen) and restore them
+-- when it hides.
+local osk_shown = false
+local osk_shrunk = {}
+local osk_dispatching = false
+
+local function set_fullscreen_state(window, internal, client)
+  -- Our own state changes emit window.fullscreen events (passing through 0); ignore them
+  osk_dispatching = true
+  hl.dispatch(hl.dsp.window.fullscreen_state({ internal = internal, client = client, window = "address:" .. window.address }))
+  osk_dispatching = false
+end
+
+local function osk_shrink(window)
+  if window.fullscreen == 2 then
+    osk_shrunk[window.address] = true
+    set_fullscreen_state(window, 1, 2)
+  end
+end
+
+hl.on("layer.opened", function(layer)
+  if layer.namespace ~= "wvkbd" then
+    return
+  end
+  osk_shown = true
+  for _, window in ipairs(hl.get_windows()) do
+    osk_shrink(window)
+  end
+end)
+
+hl.on("layer.closed", function(layer)
+  if layer.namespace ~= "wvkbd" then
+    return
+  end
+  osk_shown = false
+  for address in pairs(osk_shrunk) do
+    -- Skip windows that left fullscreen while the keyboard was shown
+    local window = hl.get_window("address:" .. address)
+    if window and window.fullscreen == 1 and window.fullscreen_client == 2 then
+      set_fullscreen_state(window, 2, 2)
+    end
+  end
+  osk_shrunk = {}
+end)
+
+hl.on("window.fullscreen", function(window)
+  if osk_shown and not osk_dispatching then
+    osk_shrink(window)
+  end
+end)
