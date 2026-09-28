@@ -38,9 +38,10 @@ rotate() {
         *)          return ;;
     esac
     echo "Rotating to transform $transform ($1)"
-    hyprctl keyword monitor "$MONITOR,$RES,$POS,$SCALE,transform,$transform"
-    hyprctl keyword "device[wacom-hid-5308-pen]:transform" "$transform"
-    hyprctl keyword "device[wacom-hid-5308-finger]:transform" "$transform"
+    # Lua config: `hyprctl keyword` is rejected, apply changes via `hyprctl eval`
+    hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"$RES\", position = \"$POS\", scale = $SCALE, transform = $transform })"
+    hyprctl eval "hl.device({ name = \"wacom-hid-5308-pen\", output = \"$MONITOR\", transform = $transform })"
+    hyprctl eval "hl.device({ name = \"wacom-hid-5308-finger\", output = \"$MONITOR\", transform = $transform })"
     start_wvkbd
 }
 
@@ -84,11 +85,16 @@ fi
 
 start_wvkbd
 
-monitor-sensor 2>&1 | while IFS= read -r line; do
-    echo "sensor: $line"
-    if [[ "$line" == *"orientation changed: "* ]]; then
-        orientation="${line##*orientation changed: }"
-        orientation="${orientation//[[:space:]]/}"
-        rotate "$orientation"
-    fi
+# Restart monitor-sensor if it exits (e.g. "Failed to claim accelerometer").
+while true; do
+    monitor-sensor 2>&1 | while IFS= read -r line; do
+        echo "sensor: $line"
+        if [[ "$line" == *"orientation changed: "* ]]; then
+            orientation="${line##*orientation changed: }"
+            orientation="${orientation//[[:space:]]/}"
+            rotate "$orientation"
+        fi
+    done
+    echo "monitor-sensor exited, restarting in 2s"
+    sleep 2
 done
