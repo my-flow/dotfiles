@@ -1,6 +1,9 @@
 export NNN_FIFO=/tmp/nnn.fifo
 export PATH="${PATH}":"${HOME}"/.local/bin
+{{- if eq (output "stat" "-f" "-c" "%T" .chezmoi.homeDir | trim) "exfat" }}
+# The home directory is on exFAT: keep the cache on a Linux file system
 export XDG_CACHE_HOME="/home/dietpi/.cache"
+{{- end }}
 
 . "$HOME/.cargo/env"
 
